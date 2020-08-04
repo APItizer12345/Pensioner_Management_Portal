@@ -1,0 +1,59 @@
+﻿@model Pension_Management_Portal.Models.PensionerInput
+
+@{
+    ViewData["Title"] = "PensionerValues";
+}
+
+<h1>PensionerValues</h1>
+
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="PensionerValues">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="name" class="control-label"></label>
+                <input asp-for="name" class="form-control" />
+                <span asp-validation-for="name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="dateOfBirth" class="control-label"></label>
+                <input asp-for="dateOfBirth" class="form-control" />
+                <span asp-validation-for="dateOfBirth" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="pan" class="control-label"></label>
+                <input asp-for="pan" class="form-control" />
+                <span asp-validation-for="pan" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="aadharNumber" class="control-label"></label>
+                <input asp-for="aadharNumber" class="form-control" />
+                <span asp-validation-for="aadharNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="pensionType" class="control-label"></label><br/>
+                <h9>Please Input-</h9><br/>
+                <h9>1.  Self</h9><br/>
+                <h9>2. Family</h9>
+                <input asp-for="pensionType" class="form-control" />
+                <span asp-validation-for="pensionType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Get Pension Amount" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
