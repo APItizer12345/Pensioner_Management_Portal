@@ -13,5 +13,6 @@ namespace Pension_Management_Portal.Models
 
         }
         public DbSet<PensionDetail> pensionDetails { get; set; }
+
     }
 }

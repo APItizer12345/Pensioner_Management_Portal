@@ -144,6 +144,7 @@ C:\Users\SAHIL\source\repos\Pension_Management_Portal\bin\Debug\netcoreapp3.1\ru
 C:\Users\SAHIL\source\repos\Pension_Management_Portal\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.0\System.Runtime.Caching.dll
 C:\Users\SAHIL\source\repos\Pension_Management_Portal\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.0\System.Runtime.Caching.dll
 C:\Users\SAHIL\source\repos\Pension_Management_Portal\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
+C:\Users\SAHIL\source\repos\Pension_Management_Portal\obj\Debug\netcoreapp3.1\Razor\Views\Home\PensionervaluesDisplayed.cshtml.g.cs
 C:\Users\SAHIL\source\repos\Pension_Management_Portal\obj\Debug\netcoreapp3.1\Pension_Management_Portal.csproj.CoreCompileInputs.cache
 C:\Users\SAHIL\source\repos\Pension_Management_Portal\obj\Debug\netcoreapp3.1\Pension_Management_Portal.MvcApplicationPartsAssemblyInfo.cache
-C:\Users\SAHIL\source\repos\Pension_Management_Portal\obj\Debug\netcoreapp3.1\Razor\Views\Home\PensionervaluesDisplayed.cshtml.g.cs
+C:\Users\SAHIL\source\repos\Pension_Management_Portal\obj\Debug\netcoreapp3.1\Razor\Views\Home\ErrorPage.cshtml.g.cs

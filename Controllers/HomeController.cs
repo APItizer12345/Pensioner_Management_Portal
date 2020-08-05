@@ -15,8 +15,14 @@ namespace Pension_Management_Portal.Controllers
 {
     public class HomeController : Controller
     {
-       static string token;
-        PensionDetail pen = new PensionDetail();
+        static string token;
+        PensionDetail penDetailObj = new PensionDetail();
+        private readonly DataContext _context;
+
+        public HomeController(DataContext context)
+        {
+            _context = context;
+        }
         public IActionResult Index()
         {
             return RedirectToAction("Login");
@@ -35,10 +41,10 @@ namespace Pension_Management_Portal.Controllers
         [HttpPost]
         public IActionResult Login(User user)
         {
-             token = GetToken("http://localhost:53093/api/Token", user);
+            token = GetToken("https://localhost:44394/api/token", user);
             if (token != null)
             {
-                return RedirectToAction("Index", "PensionerValues", new { name = token });
+                return RedirectToAction("PensionerValues");
             }
             else
             {
@@ -64,47 +70,83 @@ namespace Pension_Management_Portal.Controllers
         [HttpGet]
         public IActionResult PensionerValues()
         {
+
             return View();
         }
-        
+
         [HttpPost]
         public async Task<IActionResult> PensionerValues(PensionerInput input)
         {
-            if(ModelState.IsValid)
+
+           // string status;
+
+            if (ModelState.IsValid)
             {
-                
+
                 using (var client = new HttpClient())
                 {
                     StringContent content = new StringContent(JsonConvert.SerializeObject(input), Encoding.UTF8, "application/json");
 
-                    client.BaseAddress = new Uri("http://52.143.250.249/");
+                    client.BaseAddress = new Uri("https://localhost:44394/");
                     client.DefaultRequestHeaders.Clear();
                     client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
                     client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
 
-                    using (var response = await client.GetAsync("https://localhost:44317/api/CustomerCareService/"+ content))    //Get Post Mai check kar lena
+                    using (var response = await client.PostAsync("api/ProcessPension/GetClient", content))    //Get Post Mai check kar lena
                     {
-
+                        //var response = await client.GetAsync("api/ProcessPension/");
                         string apiResponse = await response.Content.ReadAsStringAsync();
-                        pen = JsonConvert.DeserializeObject<PensionDetail>(apiResponse);
+                        penDetailObj = JsonConvert.DeserializeObject<PensionDetail>(apiResponse);
+
                     }
+
                 }
-                return RedirectToAction("PensionervaluesDisplayed");
+
+
+
+
+
+                //return RedirectToAction("PensionervaluesDisplayed",pen);
+
+                if (penDetailObj.status.Equals(10))
+                {
+                    // ViewBag.invalid = "Pensioner Values are Invalid";
+                    _context.pensionDetails.Add(penDetailObj);
+                    _context.SaveChanges();
+                    return RedirectToAction("PensionervaluesDisplayed", penDetailObj);
+                }
+                else 
+                {
+                    ViewBag.notmatch = "Pensioner Values not match";
+                    return View();
+                }
+
             }
-           
+
             else
             {
                 ViewBag.invalid = "Pensioner Values are Invalid";
                 return View();
             }
-           
+
         }
         [HttpGet]
-        public IActionResult PensionervaluesDisplayed()
+        public IActionResult PensionervaluesDisplayed(PensionDetail penObj)
         {
-            return View(pen);
+            
+            return View(penObj);
+
+
+        }
+        [HttpGet]
+        public IActionResult ErrorPage()
+        {
+
+            return View();
+
         }
 
-       
+
+
     }
 }
