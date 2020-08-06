@@ -19,10 +19,12 @@ namespace Pension_Management_Portal.Controllers
         PensionDetail penDetailObj = new PensionDetail();
         private readonly DataContext _context;
 
+        // Dependency Injection
         public HomeController(DataContext context)
         {
             _context = context;
         }
+        // Redirection to login page
         public IActionResult Index()
         {
             return RedirectToAction("Login");
