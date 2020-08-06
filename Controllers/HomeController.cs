@@ -44,7 +44,7 @@ namespace Pension_Management_Portal.Controllers
         public IActionResult Login(User user)
         {
             token = GetToken("https://localhost:44394/api/token", user);
-            if (token.Equals("abcd"))
+            if (token=="abcd")
             {
                 ViewBag.loginerror = "Error Occured";
                 return View();
