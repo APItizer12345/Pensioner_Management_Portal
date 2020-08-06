@@ -44,6 +44,11 @@ namespace Pension_Management_Portal.Controllers
         public IActionResult Login(User user)
         {
             token = GetToken("https://localhost:44394/api/token", user);
+            if (token.Equals("abcd"))
+            {
+                ViewBag.loginerror = "Error Occured";
+                return View();
+            }
             if (token != null)
             {
                 return RedirectToAction("PensionerValues");
@@ -56,16 +61,22 @@ namespace Pension_Management_Portal.Controllers
         }
         static string GetToken(string url, User user)
         {
-
+            string token = "abcd";
             var json = JsonConvert.SerializeObject(user);
             var data = new StringContent(json, Encoding.UTF8, "application/json");
-
-            using (var client = new HttpClient())
+            try
             {
-                var response = client.PostAsync(url, data).Result;
-                string name = response.Content.ReadAsStringAsync().Result;
-                dynamic details = JObject.Parse(name);
-                return details.token;
+                using (var client = new HttpClient())
+                {
+                    var response = client.PostAsync(url, data).Result;
+                    string name = response.Content.ReadAsStringAsync().Result;
+                    dynamic details = JObject.Parse(name);
+                    return details.token;
+                }
+            }
+            catch(Exception e)
+            {
+                return token;
             }
         }
 
@@ -93,23 +104,36 @@ namespace Pension_Management_Portal.Controllers
                     client.DefaultRequestHeaders.Clear();
                     client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
                     client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-
-                    using (var response = await client.PostAsync("api/ProcessPension/GetClient", content))    //Get Post Mai check kar lena
+                    try
                     {
-                        //var response = await client.GetAsync("api/ProcessPension/");
-                        string apiResponse = await response.Content.ReadAsStringAsync();
-                        penDetailObj = JsonConvert.DeserializeObject<PensionDetail>(apiResponse);
+                        using (var response = await client.PostAsync("api/ProcessPension/GetClient", content))    //Get Post Mai check kar lena
+                        {
+                            //var response = await client.GetAsync("api/ProcessPension/");
+                            string apiResponse = await response.Content.ReadAsStringAsync();
+                            penDetailObj = JsonConvert.DeserializeObject<PensionDetail>(apiResponse);
 
+                        }
+                    }
+                    catch(Exception e)
+                    {
+                        penDetailObj = null;
                     }
 
                 }
 
-
-
-
-
                 //return RedirectToAction("PensionervaluesDisplayed",pen);
 
+                
+                if(penDetailObj==null)
+                {
+                    ViewBag.erroroccured = "Some Error Occured";
+                    return View();
+                }
+                if(penDetailObj.status.Equals(20))
+                {
+                    ViewBag.erroroccured = "Some Error Occured";
+                    return View();
+                }
                 if (penDetailObj.status.Equals(10))
                 {
                     // ViewBag.invalid = "Pensioner Values are Invalid";
@@ -117,7 +141,7 @@ namespace Pension_Management_Portal.Controllers
                     _context.SaveChanges();
                     return RedirectToAction("PensionervaluesDisplayed", penDetailObj);
                 }
-                else 
+                else
                 {
                     ViewBag.notmatch = "Pensioner Values not match";
                     return View();

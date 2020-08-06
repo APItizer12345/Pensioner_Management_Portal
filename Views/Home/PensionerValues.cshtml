@@ -48,8 +48,8 @@
 </div>
 
 @*<div>
-    <a asp-action="Index">Back to List</a>
-</div>*@
+        <a asp-action="Index">Back to List</a>
+    </div>*@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
@@ -60,6 +60,15 @@
 
         window.onload = function () {
             alert("@ViewBag.notmatch");
+        }
+    </script>
+}
+@if (ViewBag.erroroccured != null)
+{
+    <script type="text/javascript">
+
+        window.onload = function () {
+            alert("@ViewBag.erroroccured");
         }
     </script>
 }
